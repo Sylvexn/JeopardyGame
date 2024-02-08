@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections;
 using TMPro; // Make sure to include the TextMeshPro namespace
 using UnityEngine.EventSystems; // Required for the event system interfaces
 
 public class RainbowTextEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI textMesh; // Assign this in the inspector
+    public float scrollSpeed = 0.25f;
     private bool isHovering = false;
     private Coroutine rainbowCoroutine;
 
@@ -42,7 +44,7 @@ public class RainbowTextEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
         while (isHovering)
         {
             textMesh.color = Color.HSVToRGB(hue, 1, 1);
-            hue += Time.deltaTime; // Adjust the speed of color change by modifying this value
+            hue += Time.deltaTime * scrollSpeed; // Adjust the speed of color change by modifying this value
             if (hue >= 1) hue = 0;
             yield return null;
         }
