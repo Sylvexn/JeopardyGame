@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template, jsonify
 import discord
 import asyncio
 
@@ -15,6 +15,10 @@ sylUID = "138887188468203520"
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/mute', methods=['POST'])
 def mute_user():
@@ -44,6 +48,11 @@ async def mute_user_coroutine(user_id, reason, should_mute=True):
         print('I do not have permission to mute/unmute this user.')
     except discord.HTTPException as e:
         print(f'Failed to mute/unmute user due to HTTP error: {e}')
+
+@app.route('/ping', methods=['GET'])
+def ping_pong():
+    print('Pong')  # This will log 'Pong' in your console
+    return 'Pong', 200
 
 def run_bot():
     client.run(token)
