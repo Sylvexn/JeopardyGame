@@ -4,44 +4,49 @@ using System.Collections;
 public class MainMenu : MonoBehaviour
 {
     public Animator myAnimator;
-    public RectTransform playButton, loadButton, quitButton; // Use RectTransform instead of GameObject
-    private bool hasScaled = false;
+    public RectTransform playButton, loadButton, quitButton; // Assuming these are assigned in the inspector
+    private bool isScaled = false;
 
     void Update()
     {
-        AnimationCheck();
+        //AnimationCheck();
     }
 
     private void AnimationCheck()
     {
         AnimatorStateInfo stateInfo = myAnimator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Idle") && !hasScaled)
+        //Debug.Log($"Animation State: {stateInfo.fullPathHash}, Normalized Time: {stateInfo.normalizedTime}");
+        if (stateInfo.IsName("Idle") && stateInfo.normalizedTime >= 1.0f && !isScaled)
         {
-            Debug.Log("Animation Finished, starting scaling.");
-            StartCoroutine(ScaleObjects());
-            hasScaled = true;
+            Debug.Log("Starting Scaling");
+            StartScaling();
+            isScaled = true;
         }
     }
 
-    IEnumerator ScaleObjects()
+    public void StartScaling()
     {
-        Debug.Log("Scaling Objects...");
-        float duration = 0.75f;
-        float currentTime = 0f;
+        StartCoroutine(ScaleRectTransform(playButton, 0.75f));
+        StartCoroutine(ScaleRectTransform(loadButton, 0.75f));
+        StartCoroutine(ScaleRectTransform(quitButton, 0.75f));
+    }
+
+    IEnumerator ScaleRectTransform(RectTransform rectTransform, float duration)
+    {
+        float currentTime = 0;
+        Vector3 startScale = new Vector3(0, 0, 0); // Starting scale
+        Vector3 endScale = new Vector3(1, 1, 1); // Target scale
+
         while (currentTime <= duration)
         {
-            float t = currentTime / duration; // Normalized time
-            Vector3 targetScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
-            playButton.localScale = targetScale;
-            loadButton.localScale = targetScale;
-            quitButton.localScale = targetScale;
             currentTime += Time.deltaTime;
+            float t = currentTime / duration; // Normalize time to [0, 1]
+            rectTransform.localScale = Vector3.Lerp(startScale, endScale, t); // Smoothly interpolate scale
+            Debug.Log($"Scaling {rectTransform.name}: {rectTransform.localScale}"); // Add logging
             yield return null;
         }
-        // Ensure final scale is set to Vector3.one
-        playButton.localScale = Vector3.one;
-        loadButton.localScale = Vector3.one;
-        quitButton.localScale = Vector3.one;
-        Debug.Log("Scaling complete.");
+
+        rectTransform.localScale = endScale; // Ensure it's set to the final scale after loop
+        Debug.Log($"Scaling Complete for {rectTransform.name}"); // Confirm completion
     }
 }

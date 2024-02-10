@@ -748,7 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcab09776dc77964c8c32dc24403b5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myAnimator: {fileID: 1114260171}
+  myAnimator: {fileID: 220665488}
   playButton: {fileID: 549705340}
   loadButton: {fileID: 1052628717}
   quitButton: {fileID: 1595720943}
@@ -1493,11 +1493,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -264}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &1114260171 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 2795196754955882664, guid: 1f902f664205c6e4ebd4ef5d2997291f, type: 3}
-  m_PrefabInstance: {fileID: 239559549}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1595720942
 GameObject:
   m_ObjectHideFlags: 0
